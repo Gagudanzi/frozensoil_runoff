@@ -102,12 +102,11 @@ def clean_axis(axis):
     axis.grid(False)
 
 
-def save_svg(figure, filename, description=""):
+def save_svg(figure, filename):
     figure.savefig(
         figures_dir / filename, format="svg", dpi=300, bbox_inches="tight",
         facecolor="white",
         metadata={"Title": filename.removesuffix(".svg"),
-                  "Description": description,
                   "Creator": Path(__file__).name},
     )
     plt.close(figure)
@@ -284,8 +283,7 @@ grid1 = fig1.add_gridspec(
     2, 1, height_ratios=[1.15, 2.15], left=0.065, right=0.99,
     bottom=0.09, top=0.975, hspace=0.24,
 )
-map_axis1 = fig1.add_subplot(grid1[0], projection=ccrs.PlateCarree())
-draw_basin_map(map_axis1)
+draw_basin_map(fig1.add_subplot(grid1[0], projection=ccrs.PlateCarree()))
 axis1 = fig1.add_subplot(grid1[1])
 plot_seasonal(axis1, fig1_table, ["LORA"] + amip_models,
               r"Runoff (mm day$^{-1}$)", shading=False)
@@ -293,7 +291,7 @@ axis1.legend(
     frameon=False, loc="lower center", bbox_to_anchor=(0.5, 1.01), ncol=4,
     fontsize=9.0, handlelength=2.0, handletextpad=0.4, columnspacing=0.75,
 )
-save_svg(fig1, "Fig1_AMIP_runoff.svg",)
+save_svg(fig1, "Fig1_AMIP_runoff.svg")
 
 
 # Figure 3
@@ -363,60 +361,61 @@ bar_axis.legend(
     frameon=False, ncol=1, loc="upper right", bbox_to_anchor=(0.995, 1.035),
     handlelength=1.0, handletextpad=0.3, labelspacing=0.25,
 )
-save_svg(fig3, "Fig3_BFI.svg",)
+save_svg(fig3, "Fig3_BFI.svg")
 
 
 # Figure 2
-fig4_table = source_data["Fig2a"]
-fig4_metrics = source_data["Fig2bcd"]
-fig4 = plt.figure(figsize=(10.8, 5.35))
-grid4 = fig4.add_gridspec(
+fig2_table = source_data["Fig2a"]
+fig2_metrics = source_data["Fig2bcd"]
+fig2 = plt.figure(figsize=(10.8, 5.35))
+grid2 = fig2.add_gridspec(
     3, 2, width_ratios=[3.6, 1.0], height_ratios=[1.0, 1.0, 1.35],
     left=0.065, right=0.99, bottom=0.09, top=0.975,
     wspace=0.24, hspace=0.42,
 )
-axis4 = fig4.add_subplot(grid4[:, 0])
-plot_seasonal(axis4, fig4_table, ["LORA", "CON", "SEN"],
+axis2 = fig2.add_subplot(grid2[:, 0])
+plot_seasonal(axis2, fig2_table, ["LORA", "CON", "SEN"],
               r"Runoff (mm day$^{-1}$)")
-axis4.legend(frameon=False, loc="upper right", ncol=3,
+axis2.legend(frameon=False, loc="upper right", ncol=3,
              fontsize=10.5, handlelength=2.2, handletextpad=0.45,
              columnspacing=0.9)
-axis4.set_ylim(-0.1, 2.5)
-axis4.set_yticks(np.arange(0.0, 2.51, 0.5))
-kge_axis = fig4.add_subplot(grid4[0, 1])
-r_axis = fig4.add_subplot(grid4[1, 1])
-draw_metric_panel(kge_axis, fig4_metrics, "KGE_2012", False)
-draw_metric_panel(r_axis, fig4_metrics, "R", False)
+axis2.set_ylim(-0.1, 2.5)
+axis2.set_yticks(np.arange(0.0, 2.51, 0.5))
+kge_axis = fig2.add_subplot(grid2[0, 1])
+r_axis = fig2.add_subplot(grid2[1, 1])
+draw_metric_panel(kge_axis, fig2_metrics, "KGE_2012", False)
+draw_metric_panel(r_axis, fig2_metrics, "R", False)
 kge_axis.set_ylim(-1.2, 1.0)
 kge_axis.set_yticks([-1.0, -0.5, 0.0, 0.5, 1.0])
 r_axis.set_ylim(-0.05, 1.0)
 r_axis.set_yticks([0.0, 0.25, 0.5, 0.75, 1.0])
-nse_grid = grid4[2, 1].subgridspec(2, 1, height_ratios=[3, 1], hspace=0.08)
-nse_main = fig4.add_subplot(nse_grid[0, 0])
-nse_extreme = fig4.add_subplot(nse_grid[1, 0], sharex=nse_main)
-draw_broken_nse(nse_main, nse_extreme, fig4_metrics)
-save_svg(fig4, "Fig2_runoff.svg",)
+nse_grid = grid2[2, 1].subgridspec(2, 1, height_ratios=[3, 1], hspace=0.08)
+nse_main = fig2.add_subplot(nse_grid[0, 0])
+nse_extreme = fig2.add_subplot(nse_grid[1, 0], sharex=nse_main)
+draw_broken_nse(nse_main, nse_extreme, fig2_metrics)
+save_svg(fig2, "Fig2_runoff.svg")
 
 
 # Figure 4
-fig5_table = source_data["Fig4a"]
-fig5_metrics = source_data["Fig4bc"]
-fig5 = plt.figure(figsize=(10.8, 5.35))
-grid5 = fig5.add_gridspec(
+fig4_table = source_data["Fig4a"]
+fig4_metrics = source_data["Fig4bc"]
+fig4 = plt.figure(figsize=(10.8, 5.35))
+grid4 = fig4.add_gridspec(
     2, 2, width_ratios=[3.6, 1.0], height_ratios=[1, 1],
     left=0.065, right=0.99, bottom=0.09, top=0.975,
     wspace=0.24, hspace=0.42,
 )
-axis5 = fig5.add_subplot(grid5[:, 0])
-plot_seasonal(axis5, fig5_table, ["GRACE", "CON", "SEN"], "TWSA (mm)")
-axis5.legend(frameon=False, loc="upper right", ncol=3,
+axis4 = fig4.add_subplot(grid4[:, 0])
+plot_seasonal(axis4, fig4_table, ["GRACE", "CON", "SEN"], "TWSA (mm)")
+axis4.legend(frameon=False, loc="upper right", ncol=3,
              fontsize=10.5, handlelength=2.2, handletextpad=0.45,
              columnspacing=0.9)
 positions = (1.0, 2.0)
-twsa_r_axis = fig5.add_subplot(grid5[0, 1])
-draw_metric_panel(twsa_r_axis, fig5_metrics, "R", False, positions)
-nse_axis = fig5.add_subplot(grid5[1, 1])
-draw_metric_panel(nse_axis, fig5_metrics, "NSE", True, positions)
+draw_metric_panel(fig4.add_subplot(grid4[0, 1]), fig4_metrics,
+                  "R", False, positions)
+nse_axis = fig4.add_subplot(grid4[1, 1])
+draw_metric_panel(nse_axis, fig4_metrics, "NSE", True, positions)
 nse_axis.set_ylim(-1.25, 1.0)
 nse_axis.set_yticks(np.arange(-1.0, 1.01, 0.5))
-save_svg(fig5, "Fig4_TWSA.svg",)
+save_svg(fig4, "Fig4_TWSA.svg")
+print("Done")
