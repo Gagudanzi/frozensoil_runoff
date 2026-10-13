@@ -50,10 +50,10 @@ amip_models = [
     "MPI-ESM1-2-LR", "MRI-ESM2-0",
 ]
 colors = {
-    "LORA": "#7DA48F", "GSCD": "#D0D08A", "GRACE": "#ACA1BE",
+    "LORA": "#E19D49", "GSCD": "#D0D08A", "GRACE": "#ACA1BE",
     "CON": "#78B7D0", "SEN": "#D9756C", "text": "#4D4D4D",
     "zero": "#A8A8A8", "land": "#E6E6E6",
-    "ACCESS-ESM1-5": "#9F8DB8", "CESM2": "#E19D49",
+    "ACCESS-ESM1-5": "#9F8DB8", "CESM2": "#808080",
     "CanESM5": "#D0D08A", "E3SM-2-1": "#AABCD8",
     "MIROC6": "#C16E71", "MPI-ESM1-2-LR": "#D59EBE",
     "MRI-ESM2-0": "#6E8FB2",
@@ -102,7 +102,7 @@ def clean_axis(axis):
     axis.grid(False)
 
 
-def save_svg(figure, filename, description):
+def save_svg(figure, filename, description=""):
     figure.savefig(
         figures_dir / filename, format="svg", dpi=300, bbox_inches="tight",
         facecolor="white",
@@ -293,8 +293,7 @@ axis1.legend(
     frameon=False, loc="lower center", bbox_to_anchor=(0.5, 1.01), ncol=4,
     fontsize=9.0, handlelength=2.0, handletextpad=0.4, columnspacing=0.75,
 )
-save_svg(fig1, "Fig1_AMIP_runoff.svg",
-         "Study-basin map and 21-basin equal-weight runoff seasonal cycle.")
+save_svg(fig1, "Fig1_AMIP_runoff.svg",)
 
 
 # Figure 3
@@ -364,8 +363,7 @@ bar_axis.legend(
     frameon=False, ncol=1, loc="upper right", bbox_to_anchor=(0.995, 1.035),
     handlelength=1.0, handletextpad=0.3, labelspacing=0.25,
 )
-save_svg(fig3, "Fig3_BFI.svg",
-         "BFI maps masked to basins 1-21 and basin-integrated BFI bars.")
+save_svg(fig3, "Fig3_BFI.svg",)
 
 
 # Figure 2
@@ -397,8 +395,7 @@ nse_grid = grid4[2, 1].subgridspec(2, 1, height_ratios=[3, 1], hspace=0.08)
 nse_main = fig4.add_subplot(nse_grid[0, 0])
 nse_extreme = fig4.add_subplot(nse_grid[1, 0], sharex=nse_main)
 draw_broken_nse(nse_main, nse_extreme, fig4_metrics)
-save_svg(fig4, "Fig2_runoff.svg",
-         "Runoff seasonal cycle and complete-monthly KGE, R, and NSE.")
+save_svg(fig4, "Fig2_runoff.svg",)
 
 
 # Figure 4
@@ -422,5 +419,4 @@ nse_axis = fig5.add_subplot(grid5[1, 1])
 draw_metric_panel(nse_axis, fig5_metrics, "NSE", True, positions)
 nse_axis.set_ylim(-1.25, 1.0)
 nse_axis.set_yticks(np.arange(-1.0, 1.01, 0.5))
-save_svg(fig5, "Fig4_TWSA.svg",
-         "TWSA seasonal cycle and complete-monthly R and NSE; KGE excluded.")
+save_svg(fig5, "Fig4_TWSA.svg",)
